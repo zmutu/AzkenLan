@@ -1,0 +1,3 @@
+Pasahitza enkriptatzeko, datu-basean sartu aurretik 'password_hash()' 
+PHP-ren funtzioa erabiliz egin dut. Ondoren datu-basean sartu.
+Besterik ez

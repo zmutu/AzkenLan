@@ -10,7 +10,7 @@ if($leku){
 else{
 	$zerbitzaria='localhost';
 	$erabiltzaile='id7270487_zmutu';
-	$gakoa='60ra3u5kalH3rr1a';
+	$gakoa='********';
 	$db='id7270487_quiz';
 }
 /***

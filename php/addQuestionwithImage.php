@@ -1,4 +1,16 @@
-<?php
+<?php session_start();
+
+$f = fopen('fitx.txt','a+');
+fwrite($f,"\nHasi behar du...\t");
+fwrite($f,$_POST['galdera']);
+
+if(isset($_POST['mail'])){fwrite($f,"\nMail: ".$_POST['mail']);}
+
+if(!isset($_SESSION['rola'])){header('location:../layout.htm');}
+if(strcmp($_SESSION['rola'],'ikasle') != 0){header('location:../layout.htm');}
+
+fwrite($f,"\nSaioa: ".$_SESSION['rola']." -> ".$_SESSION['user']);
+
 $img_nm = '';	//marrazki izena gordetzeko
 $img_tp = '';	//marrazki mota gordetzeko
 
@@ -15,6 +27,8 @@ if(isset($_POST['gaia'])){$gaia = $_POST['gaia'];}
 if(isset($mail)){
 	//mail jaso bada, datuak aztertu
 	$msg = datoak_aztertu($mail,$galdera,$zuzena,$erantzunokerra1,$erantzunokerra2,$erantzunokerra3,$zailtasuna,$gaia);
+	fwrite($f,"\naddQuestionwithImage (30): ->".$msg."<-");
+	
 	if($msg != ''){echo($msg);}
 	else{
 		//datoak jaso da eta egokiak dire
@@ -23,8 +37,10 @@ if(isset($mail)){
 		$max_kb = 1048576; //1Mb-eko argazkia gehienez
 		$imgs = array("image/jpg", "image/jpeg", "image/gif", "image/png", "image/bmp");
 
-		if(!$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db)){
-			echo('Datu-basearekin konexioa ez da lortu');
+		$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
+		if($konexioa -> connect_error){
+			fwrite($f,"\naddQuestionwithImage (45): ->".$konexioa -> connect_error."<-");
+			echo("errorea datu-basearekin konektatzean");
 			exit();
 		}
 		if (isset($_FILES["html_file"]) || $_FILES["html_file"]["error"] = 0){
@@ -42,13 +58,16 @@ if(isset($mail)){
 			$img = '';
 			$img_tp = '-';
 		}
-		$sql = "insert into questions(mail,galdera,erantzun_zuzena,erantzun_okerra_1,erantzun_okerra_2,erantzun_okerra_3,zailtasuna,gaia,marrazkia,mota) values('".$mail."','".$galdera."','".$zuzena."','".$erantzunokerra1."','".$erantzunokerra2."','".$erantzunokerra3."','".$zailtasuna."','".$gaia."','".$img."','".$img_tp."')";
+		$sql = "insert into questions(mail,galdera,zuzena,erantzun_okerra1,erantzun_okerra2,erantzun_okerra3,zailtasuna,gaia,argazkia,mota) values('".$mail."','".$galdera."','".$zuzena."','".$erantzunokerra1."','".$erantzunokerra2."','".$erantzunokerra3."','".$zailtasuna."','".$gaia."','".$img."','".$img_tp."')";
 
 		if(!$konexioa -> query($sql)){
-			echo('Errorea datu-basean datuak sartzean<br/>');
+			fwrite($f,"\naddQuestionwithImage (67): ->".$konexioa -> error."<-");
+			echo("Errorea datu-basean datuak sartzean<br/>\ninsert into questions(mail,galdera,zuzena,erantzun_okerra1,erantzun_okerra2,erantzun_okerra3,zailtasuna,gaia,argazkia,mota) values('".$mail."','".$galdera."','".$zuzena."','".$erantzunokerra1."','".$erantzunokerra2."','".$erantzunokerra3."','".$zailtasuna."','".$gaia."','','".$img_tp."')");
 		}
 		else{
+			fwrite($f,"insert into questions(mail,galdera,zuzena,erantzun_okerra1,erantzun_okerra2,erantzun_okerra3,zailtasuna,gaia,argazkia,mota) values('".$mail."','".$galdera."','".$zuzena."','".$erantzunokerra1."','".$erantzunokerra2."','".$erantzunokerra3."','".$zailtasuna."','".$gaia."','','".$img_tp."')");
 			$msg2 = gorde_XML($mail,$galdera,$zuzena,$erantzunokerra1,$erantzunokerra2,$erantzunokerra3,$zailtasuna,$gaia);
+			sleep(5);
 			echo('Galdera sortu da<br/>'.$msg2);
 		}
 		$konexioa -> close();

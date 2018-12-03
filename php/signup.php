@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 $izena = '';
 $pasahitza1 = '';
 $pasahitza2 = '';
@@ -10,22 +10,24 @@ if(isset($_POST['izena'])){$izena = $_POST['izena'];}
 
 if(isset($_POST['pasahitza1'])){$pasahitza1 = $_POST['pasahitza1'];}
 if(isset($_POST['pasahitza2'])){$pasahitza2 = $_POST['pasahitza2'];}
-if(isset($_FILES["html_file"]) && $_FILES["html_file"]["error"] == 0){
-	$img = $_FILES['html_file']["tmp_name"];	//fitxategiaren edukia
-	$img_nm = $_FILES["html_file"]["name"];		//fitxategiaren izena
-	$img_tp = $_FILES["html_file"]["type"];		//fitxategi mota
+if(isset($_FILES['html_file']) && $_FILES['html_file']['error'] == 0){
+	$img = $_FILES['html_file']['tmp_name'];	//fitxategiaren edukia
+	$img_nm = $_FILES['html_file']['name'];		//fitxategiaren izena
+	$img_tp = $_FILES['html_file']['type'];		//fitxategi mota
 	$neurri = $_FILES['html_file']['size'];		//fitxategiaren neurriak
 }
 
 if(isset($mail)){
 	$f = fopen('fitx.txt','a+');
-	$m="lanean...";
+	$m="\nlanean...";
 	fwrite($f,$m);
-	fwrite($f,'\r\nbigarren lerroa\r\n'.$mail.'\r\n'.$izena);
+	fwrite($f,"\r\nbigarren lerroa\r\n".$mail."\r\n".$izena);
 	fclose($f);
 
 	//mail jaso bada, datuak aztertu
 	$msg = datoak_aztertu($mail,$izena,$pasahitza1,$pasahitza2);
+	$pasahitz = password_hash($pasahitza1, PASSWORD_DEFAULT);
+	
 	if($msg != ''){echo($msg);}
 	else{
 		//datoak jaso da eta egokiak dire
@@ -47,12 +49,20 @@ if(isset($mail)){
 				$img_tp = '-';
 			}
 		}
-		$sql = "Insert into users(eposta,izena,pasahitza,argazkia,mota) values('".$mail."','".$izena."','".$pasahitza1."','".$img."','".$img_tp."')";
+		$sql = "Insert into users(aktibo,rola,eposta,izena,pasahitza,argazkia,mota) values(1,'ikasle','".$mail."','".$izena."','".$pasahitz."','".$img."','".$img_tp."')";
+		//$sql = "Insert into users(aktibo,rola,eposta,izena,pasahitza,argazkia,mota) values(1,'ikasle','".$mail."','".$izena."','".password_hash($pasahitza1, PASSWORD_DEFAULT)."','".$img."','".$img_tp."')";
+
+	$f = fopen('fitx.txt','a+');
+	$m="\nlanean...";
+	fwrite($f,$m);
+	fwrite($f,"\n-> Bigarren lerroa\r\n".$sql);
+	fclose($f);
 
 		if(!$konexioa -> query($sql)){
 			echo('Errorea datu-basean datuak sartzean');
 		}
 		else{
+			sleep(2);
 			echo('Erabiltzailea sortu da');
 		}
 	}
@@ -66,7 +76,6 @@ input{margin:2px;}
 #msg{border:solid 2px #0055AA;background-color:#0055FF;font-size:2em;display:none;padding:5px;position:absolute;}
 #signup{width:350px;margin:5px auto;border:5px outset #555555;}
 </style>
-<script src='../js/jquery.js' type='text/javascript'></script>
 <script>
 function fitxategi(){
 	var img = $('#img')[0].files[0];
@@ -75,9 +84,9 @@ function fitxategi(){
 		var FR = new FileReader();
 		FR.readAsDataURL(img);
 		FR.onload = function(e){
-			$m = $('#marrazkia');
-			$m.attr('src',e.target.result);
-			$m.css('width',75);
+			m = $('#marrazkia');
+			m.attr('src',e.target.result);
+			m.css('width',75);
 		}
 	}
 }
@@ -85,36 +94,40 @@ function garbitu(){
 	$('#marrazkia').attr('src','');
 	$('#neurri').html('');
 }
-$(document).ready(function(e){
-	$('#galderenF').on('submit',function(e){
-		e.preventDefault();
-		$.ajax({
-			type: 'POST',
-			url: 'signup.php',
-			data: new FormData(this),
-			contentType: false,
-			cache: false,
-			processData: false,
-			dataType: 'text',
-			success: function(em){
-				console.log('ongi: '+em);
-				$m = $('#msg');
-				$m.html(em);
-				$w = $(window);
-				$m.css({top:($w.height()-$m.height())/2,lef:($w.width()-$m.width())/2}).show();
-				setTimeout(function(){$m.fadeOut();},5000);
-			},
-			error: function(er){
-				console.log('errorea: '+er);
-				$m = $('#msg');
-				$m.html(er);
-				$w = $(window);
-				$m.css({top:($w.height()-$m.height())/2,lef:($w.width()-$m.width())/2}).show();
-				setTimeout(function(){$m.fadeOut();},5000);
-			}
+var hasi = {
+	onReady: function(e){
+		$('body').css({cursor:'progress'});
+		$('#galderenF').on('submit',function(e){
+			e.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url: 'signup.php',
+				data: new FormData(this),
+				contentType: false,
+				cache: false,
+				processData: false,
+				dataType: 'text',
+				success: function(em){
+					$('body').css({cursor:'default'});
+					m = $('#msg');
+					m.html(em);
+					w = $(window);
+					m.css({top:(w.height()-m.height())/2,lef:(w.width()-m.width())/2}).show();
+					setTimeout(function(){m.fadeOut();},5000);
+				},
+				error: function(er){
+					$('body').css({cursor:'default'});
+					m = $('#msg');
+					m.html(er);
+					w = $(window);
+					m.css({top:(w.height()-m.height())/2,lef:(w.width()-m.width())/2}).show();
+					setTimeout(function(){m.fadeOut();},5000);
+				}
+			});
 		});
-	});
-});
+	}
+};
+$(document).ready(hasi.onReady);
 </script>
 <div id='signup'>
 	<span id='msg'></span><br/>

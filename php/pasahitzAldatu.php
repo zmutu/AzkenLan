@@ -69,7 +69,7 @@ var hasi = {
 					m.html(em);
 					w = $(window);
 					m.css({top:(w.height()-m.height())/2,lef:(w.width()-m.width())/2}).show();
-					setTimeout(function(){m.fadeOut();},5000);
+					setTimeout(function(){m.fadeOut();},3000);
 				},
 				error: function(er){
 					$('*').css({cursor:'default'});
@@ -78,7 +78,7 @@ var hasi = {
 					m.html(er);
 					w = $(window);
 					m.css({top:(w.height()-m.height())/2,lef:(w.width()-m.width())/2}).show();
-					setTimeout(function(){m.fadeOut();},5000);
+					setTimeout(function(){m.fadeOut();},3000);
 				}
 			});
 		});
@@ -117,7 +117,7 @@ function pasahitza_gorde($k,$p1,$p2,$i){
 	$p0 = $r -> fetch_array(MYSQLI_ASSOC);
 
 	if(strcmp($p1,$p0['pasahitza']) != 0){
-		return 'pasahitz zaharra ez dago ongi<br/>'.$p1.' /= '.$p0['pasahitza'].'<br/>Select pasahitza from users where id = "'.$i.'"';
+		return 'pasahitz zaharra ez dago ongi';
 	}
 
 	$msg = $k -> query("update users set pasahitza = '" . $p2 . "' where id = '" . $i . "'");

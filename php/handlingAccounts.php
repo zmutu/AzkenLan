@@ -148,7 +148,8 @@ else{$img = '';}
 	<header>
 		<img src='<?php echo($img);?>' width='75px' />
 		<span id='itxi' onclick='saioaItxi()'>Log Out</span>
-		<span style='position:absolute'><?php echo($_SESSION['user']);?></span><br/>
+		<span style='position:absolute'><?php echo($_SESSION['user']);?></span>
+		<span id='berria' onclick='pasahitzAldatu()'>Pasahitza Aldatu</span><br/><br/>
 		<hr/>
 	</header>
 	<section>

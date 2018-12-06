@@ -90,7 +90,7 @@ function datoak_aztertu($m,$gl,$ez,$e1,$e2,$e3,$z,$ga){
 	if($ez == '' || $e1 == '' || $e2 == '' || $e3 == '' || $ga == ''){return 'daturen bat falta da';}
 
 	//mail aztertu
-	$exp_reg = '/\w\w[a-z]*\d\d\d@ikasle\.ehu\.eus$/';
+	$exp_reg = '/\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus$/';
 	if(!preg_match ($exp_reg, $m)){return 'eposta ez dago ongi eraikita';}
 
 	//galdera aztertu

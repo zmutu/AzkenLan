@@ -102,6 +102,7 @@ else{$img = '';}
 			});
 		}
 		function galderaBerria(){
+			console.log('--');
 			$.ajax({
 				type:'GET',
 				url:'addQuestion_HTML5.php',
@@ -227,7 +228,8 @@ else{$img = '';}
 		<img src='<?php echo($img);?>' width='40px' /><span style='float:none;border:0px'><?php echo($_SESSION['user']);?></span>
 		<span id='itxi' onclick='saioaItxi()'>Log Out</span>
 		<span id='itxi' onclick='galderaZerrenda()'>Galdera Zerrenda</span>
-		<span id='berria' onclick='galderaBerria()'>Galdera Berria</span><br/>
+		<span id='berria' onclick='galderaBerria()'>Galdera Berria</span>
+		<span id='berria' onclick='pasahitzAldatu()'>Pasahitza Aldatu</span><br/>
 		<hr/>
 	</header>
 	<section>

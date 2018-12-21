@@ -1,8 +1,10 @@
-body				{background: #999;}
+body				{background: #889;}
 
 #page-wrap:after 	{content: "Wide Layout";}
 
 nav					{float: left; width: 15%; height: 400px;}
 nav span				{margin: 0px 100px 0px 0px;}
-section				{float: right; width: 80%; height: 400px; overflow:scroll;}
+section				{float: right; width: 80%; height: 400px; overflow:auto;}
 footer				{clear: both; display: block;}
+
+header{height:50px;}

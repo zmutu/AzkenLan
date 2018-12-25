@@ -1,3 +1,12 @@
+Cesar Mutuberria
+
+# 000webhost-en ezin izan dut kautotu eta asteburuan honara pasa dut:
+http://katakrak.info/WS/php/layout.php
+
+Eskolaz kanpo egindako denbora:
+21 ordu
+
+Garapena
 Pasahitza berreskuratzeko edo aldatzeko aplikazio berdina erabili dut 'pasahitza.php'
 
 Adlatu

@@ -37,10 +37,11 @@ if(isset($_POST['gorde'])){
 	$e3 = $_POST['erantzun_okerra_3'];
 	$zailtasun = $_POST['zailtasuna'];
 	$gai = $_POST['gaia'];
-	erregistroa_eguneratu($konexioa,$id,$galdera,$zuzena,$e1,$e2,$e3,$zailtasun,$gai);
-	sleep(5);
-	$htm = galdera_zerrenda($konexioa);
+	//erregistroa_eguneratu($konexioa,$id,$galdera,$zuzena,$e1,$e2,$e3,$zailtasun,$gai);
+	//sleep(5);
+	//$htm = galdera_zerrenda($konexioa);
 	$konexioa -> close();
+    $htm = 'funtzionalitate hau desgaitu egin da.<br/>ez da derrigorrezkoa eta datoak gordetzean emaiza<br/>ez da behar den bezalakoa'; 
 	amaitu($htm);
 }
 function galdera_zerrenda($k){

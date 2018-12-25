@@ -11,7 +11,7 @@ Eskolaz kanpo egindako denbora:
 Garapena
 Pasahitza berreskuratzeko edo aldatzeko aplikazio berdina erabili dut 'pasahitza.php'
 
-Adlatu
+Aldatu
 Pasahitza aldatzeko metodoa oso simplea da. Erabiltzaileak eposta, pasahitza zaharra eta bi pasahitz berriak sartu behar ditu.
 Datoak aztertu ondoren eta soilik egokiak badira, pasahitz berria datu-basean gordeko du.
 

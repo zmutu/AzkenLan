@@ -7,23 +7,25 @@ if(isset($_POST['mail1'])){$mail = $_POST['mail1'];}
 if(isset($_POST['mail2'])){$mail2 = $_POST['mail2'];}
 if(isset($_POST['mailId'])){$userId = $_POST['mailId'];}
 
+include('dbConfig.php');
+
 if(isset($_POST['matrikula'])){
 	//ikaslea matrikulatuta dagoen aztertu
 	amaitu(matrikulatua($_POST['mail1']));
 }
 if(isset($pasahitza0)){
 	//pasahitz bat aldatu nahi da
-	$msg = datoak_aztertu($mail,$pasahitza0,$pasahitza1,$pasahitza2);
+  	$msg = datoak_aztertu($mail,$pasahitza0,$pasahitza1,$pasahitza2);
 	if(strlen($msg)>0){
 		amaitu($msg);
 	}
 	//hemen datoak ongi daude
-	include('dbconfig.php');
 	$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
 	if($konexioa -> connect_error){
-		amaitu('errorea datu-basearekin konektatzean');
+		amaitu('errorea datu-basearekin konektatzean <br/>'.$konexioa->connect_error);
 	}
-	$sql = 'select pasahitza from users where eposta = "' . $mail . '"';
+	$sql = 'select pasahitza from erabiltzaile where eposta = "' . $mail . '"';
+
 	$pswrd = $konexioa -> query($sql);
 	if($konexioa -> error){
 		amaitu('errorea datu-basea atzitzean');
@@ -34,7 +36,7 @@ if(isset($pasahitza0)){
 	}
 	$p3 = password_hash($pasahitza1,PASSWORD_DEFAULT);
 
-	$sql = 'update users set pasahitza = "' . $p3 . '" where eposta = "' . $mail .'"';
+	$sql = 'update erabiltzaile set pasahitza = "' . $p3 . '" where eposta = "' . $mail .'"';
 	$konexioa -> query($sql);
 	if($konexioa -> error){
 		amaitu('errorea pasahitza berria gordetzean');
@@ -48,7 +50,7 @@ if(isset($mail2)){
 	if(strcmp($mtrkl,'BAI') != 0){
 		amaitu('mail hori ez dago matrikulatuta edo ez dago sisteman gordeta');
 	}
-	include('dbconfig.php');
+  
 	$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
 	if($konexioa -> connect_error){
 		amaitu('ezin izan da zure eskaera gauzatu');
@@ -64,15 +66,15 @@ if(isset($mail2)){
 	if(strlen($str)==0){
 		amaitu('errore bat gertatu da zure eskaera gauzatzean<br/>saiatu berriro beranduago');
 	}
-	echo($str);
+  
 	$konexioa -> query("insert into pasahitz(mailId,kode,muga,aktibo) values('" . $mailId . "','" . $kode . "','" . $data . "'," . true .")");
 	if($konexioa -> error){
 		amaitu('eskaera gauzatzean erroreren bat gertatu da<br/>saiatu berriro beranduago');
 	}
-	$ok = mail($mail2,"Pasahitza Berrabiarazi","Pasahitza berrabiarazteko ondorengo esteka aukeratu:\n\nhttps://zmutu.000webhostapp.com/Web_Sistemak/AzkLan/php/pasahitza.php?jatorri=" . $str . "\n\n24 orduko epea du esteka honek baliagarria izateko\n\nBaliteke pasahitza berabiarazteko zuk eskatua ez izatea.. BLA BLA BLA...\n\nmezu hau inprimatu aurretik BLA BLA BLA...");
+	$ok = mail($mail2,"Pasahitza Berrabiarazi","Pasahitza berrabiarazteko eskaera bat jaso dugulakoz bidali dizugu mail hau\n\nPasahitza berrabiarazteko ondorengo esteka aukeratu:\n\nhttp://katakrak.info/WS/php/pasahitza.php?jatorri=" . $str . "\n\n24 orduko epea du esteka honek baliagarria izateko\n\nBaliteke pasahitza berabiarazteko eskaera zuk egina ez izatea.. BLA BLA BLA...\n\nMezu hau inprimatu aurretik BLA BLA BLA...\n\n\nEta orain iragarki batzuk:\n");
 
 	if(!$ok){
-		amaitu('errore bat gertatu da zuere eskaera gauzatzean<br/>saiatu berriro beranduago');
+		amaitu('errore bat gertatu da zure eskaera gauzatzean<br/>saiatu berriro beranduago');
 	}
 	amaitu('laister mezu bat jasoko duzu<br/>jarraitu mezuaren esanak');
 	
@@ -80,21 +82,21 @@ if(isset($mail2)){
 if(isset($_GET['jatorri'])){
 	//pasahitza berrabiarazteko eskaera bat gauzatu behar da
 	$str = $_GET['jatorri'];
-	include('dbconfig.php');
 	$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
 	if($konexioa -> connect_error){
-		amaitu('ezin da pasahitza berrabiarazi<br/>erabil ezazu berriz zure mailean duzu esteka');
+		amaitu('ezin da pasahitza berrabiarazi<br/>erabil ezazu berriz zure mailean bidali genizun esteka');
 	}
 	$id = emanId($konexioa,$str);
-
-	
+	if(strlen($id)==0){
+    	amaitu('jasotako datoekin ezin izan da erabiltzailearen datoak lortu<br/>behar bada zerbitzaria lanpetuta dago. saiatu aurrerago');
+    }
 	$iraungitu = eskaera_aktibo_du($konexioa,$id);
 	if($iraungitu){
 		berrabiarazi($id);
 		exit();
 	}
 	else{
-		amaitu('aktibazio saio hau iraungituta dago.<br/>behar baduzu sortu beste eskaera bat<br/><br/><a href="https://zmutu.000webhostapp.com/Web_Sistemak/AzkLan/php/layout.php"> hemen </a>');
+		amaitu('aktibazio saio hau iraungituta dago.<br/>behar baduzu, sortu beste eskaera bat<br/><br/><a href="http://katakrak.info/WS/php/layout.php"> hemen </a>');
 	}
 	amaitu('une honetan ezin da pasahitza berrabiarazi<br/>barkatu eragozpenak<br/>saiatu aurrerago');
 }
@@ -108,13 +110,12 @@ if(isset($userId)){
 	if(strlen($p1)<8){
 		amaitu('pasahitzaren luzera ez da egokia');
 	}
-	include('dbconfig.php');
 	$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
 	if($konexioa -> connect_error){
 		amaitu('ezin da pasahitza berria gorde<br/>erabil ezazu berriz zure mailean duzu esteka');
 	}
 	$p0 = password_hash($p1,PASSWORD_DEFAULT);
-	$konexioa -> query("update users set pasahitza = '" . $p0 . "' where id = '" . $userId . "'");
+	$konexioa -> query("update erabiltzaile set pasahitza = '" . $p0 . "' where id = '" . $userId . "'");
 	if($konexioa -> error){
 		amaitu('ezin da pasahitza berria gorde<br/>erabil ezazu berriz zure mailean duzu esteka');
 	}
@@ -346,10 +347,11 @@ function matrikulatua($ml){
 	if(strcmp($matrikulatutaDago,'BAI')==0){
 		include('dbconfig.php');
 		$k = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
-		$id = $k -> query("select count(id) as zk from users where eposta = '" . $ml . "'");
-		$i = $id -> fetch_array(MYSQLI_NUM);
-		//echo($i[0]);
-		if($i[0] == 0){$matrikulatutaDago = 'EZ';}
+		$id = $k -> query("select count(id) as zk from erabiltzaile where eposta = '" . $ml . "'");
+		if($id){
+          $i = $id -> fetch_array(MYSQLI_NUM);
+		  if($i[0] == 0){$matrikulatutaDago = 'EZ';}
+        }
 	}
 	return $matrikulatutaDago;
 }
@@ -371,8 +373,8 @@ function sortu_eskaera($k,$i){
 	}
 }
 function eman_id($k,$m){
-	//mail baten users taulako esleitua duen id itzultzen du
-	$em = $k -> query("select id from users where eposta = '" . $m . "'");
+	//mail baten erabiltzaile taulako esleitua duen id itzultzen du
+	$em = $k -> query("select id from erabiltzaile where eposta = '" . $m . "'");
 	$e = $em -> fetch_array(MYSQLI_ASSOC);
 	return $e['id'];
 }
@@ -389,7 +391,7 @@ function strina_sortu($luz){
 }
 function sortu_hash($k,$m,$g){
 	//erabiltzailearen id,izena eta eposta eta $g (ausaz sortutako strina) datoekin hash bat sortzen du
-	$erabiltzaile = $k -> query("select concat(id,eposta,izena) from users where id = '".$m."'");
+	$erabiltzaile = $k -> query("select concat(id,eposta,izena) from erabiltzaile where id = '".$m."'");
 	$em = '';
 	if($erabiltzaile){
 		$erabiltz = $erabiltzaile -> fetch_array(MYSQLI_NUM);
@@ -402,10 +404,8 @@ function sortu_hash($k,$m,$g){
 function emanId($k,$s){
 	//$s = (password_hash(id+izena+eposta+kode)) duen erabiltzailearen id itzultzen du
 	$id = '';
-	$zerrenda = $k -> query("select id,eposta,izena from users");
-	if($k -> error){
-		return 'ezin izan da pasahitza berreskuratu<br/>erabil ezazu berriz korreoan duzun esteka';
-	}
+	$zerrenda = $k -> query("select id,eposta,izena from erabiltzaile");
+  
 	while($z = $zerrenda -> fetch_array(MYSQLI_ASSOC)){
 		$param = $k -> query("select kode from pasahitz where mailId = '".$z['id']."' and aktibo = 1");
 		$prm = $param -> fetch_array(MYSQLI_ASSOC);
@@ -420,12 +420,14 @@ function emanId($k,$s){
 }
 function eskaera_aktibo_du($k,$i){
 	//mail batek berrabiarazte eskaera bat aktibo badu true itzuliko du, false bestela
-	$egoera = $k -> query("select muga from pasahitz where mailId = '" . $i . "' and aktibo = 1");
+
+    $egoera = $k -> query("select muga from pasahitz where mailId = '" . $i . "' and aktibo = 1");
 	$iraungituta = 0;
 	if($egoera){
 		$data = $egoera -> fetch_array(MYSQLI_ASSOC);
+
 		if(strlen($data['muga'])>0){
-			$iraungituta = $data['muga']<time()?0:1;
+			$iraungituta = (int)$data['muga']<time()?0:1;
 		}
 		$egoera -> close();
 	}

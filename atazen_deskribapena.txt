@@ -12,10 +12,20 @@ Garapena
 Pasahitza berreskuratzeko edo aldatzeko aplikazio berdina erabili dut 'pasahitza.php'
 
 Adlatu
-Pasahitza aldatzeko metodoa oso simplea da. Erabiltzaileak eposta, pasahitza zaharra eta bi pasahitz berriak sartu behar ditu. Datoak aztertu ondoren eta soilik egokiak badira, pasahitz berria datu-basean gordeko du.
+Pasahitza aldatzeko metodoa oso simplea da. Erabiltzaileak eposta, pasahitza zaharra eta bi pasahitz berriak sartu behar ditu.
+Datoak aztertu ondoren eta soilik egokiak badira, pasahitz berria datu-basean gordeko du.
 
 Berreskuratu
-Pashitza berreskuratzeko konplexuagoa da. Hau gauzatzeko taula berri bat gehitu dut 'pasahitz'. Taula honetak berreskuratze eskaera guztiak gordeko dira.
-Pasahitza berreskuratzeko erabiltzaileak bere mail idatziko du. Zerbitzariak mail zuzena den eta matrikulatua den aztertuko du. Ondoren aurrez eskaera bat aktibo eta iraungitu gabe duen begiratuko du taula berrian. Eskaerarik ez badu edo eskaera iraungituta edo ez aktibo badu, berria sortuko du. Ausaz kode bat sortu, erabiltzailearn Id, Mail eta Izena eta kode berriarekin hash bat sortuko du. Erabiltzaile postara esteka bat bidaliko dio, esteka hau 'pasahitza.php' aplikaziora link bat da eta parametrizatuta sortu duen hash berria. Ondoren taulan erabiltzaileren Id, sortutako kodea, denbora bat (iraungitzea denbora kontrolatzeko) eta aktibo = 1 gordeko du. Bidalitako esteka 24 orduko epea aktibo egonen da.
-Erabiltzaileak mailen jaso duen esteka aukeratu ondoren aplikazioa irekiko da. Aplikazioak GET metodo bidez hash jasoko du. datu basean dagoen informazioarekin id, eposta, izena, eta kodearekin konparatuko du. Ongi badago aktibo dagoen eta irauntigu gabe dagoen aztertuko du. Hala bada, formulario bat aurkeztuko dio, formulario honek ezkututa erabiltzailearen mail izanen du.
-Erabiltzaileak formularioan pasahitza bi aldiz idatzi eta bidaltzekin aplikazioak pasahitzak egokiak direla aztertu eta horrela bada, gorde eginen du.
+Pashitza berreskuratzeko konplexuagoa da. Hau gauzatzeko taula berri bat gehitu dut 'pasahitz'. Taula honetak berreskuratze
+eskaera guztiak gordeko dira.
+Pasahitza berreskuratzeko erabiltzaileak bere mail idatziko du. Zerbitzariak mail zuzena den eta matrikulatua den aztertuko du.
+Ondoren aurrez eskaera bat aktibo eta iraungitu gabe duen begiratuko du taula berrian. Eskaerarik ez badu edo eskaera iraungituta
+edo ez aktibo badu, berria sortuko du. Ausaz kode bat sortu, erabiltzailearn Id, Mail eta Izena eta kode berriarekin hash bat
+sortuko du. Erabiltzaile postara esteka bat bidaliko dio, esteka hau 'pasahitza.php' aplikaziora link bat da eta parametrizatuta
+sortu duen hash berria. Ondoren taulan erabiltzaileren Id, sortutako kodea, denbora bat (iraungitzea denbora kontrolatzeko) eta
+aktibo = 1 gordeko du. Bidalitako esteka 24 orduko epea aktibo egonen da.
+Erabiltzaileak mailen jaso duen esteka aukeratu ondoren aplikazioa irekiko da. Aplikazioak GET metodo bidez hash jasoko du. datu
+basean dagoen informazioarekin id, eposta, izena, eta kodearekin konparatuko du. Ongi badago aktibo dagoen eta irauntigu gabe
+dagoen aztertuko du. Hala bada, formulario bat aurkeztuko dio, formulario honek ezkututa erabiltzailearen mail izanen du.
+Erabiltzaileak formularioan pasahitza bi aldiz idatzi eta bidaltzekin aplikazioak pasahitzak egokiak direla aztertu eta horrela
+bada, gorde eginen du.

@@ -11,7 +11,7 @@ if($konexioa -> connect_error){
 	amaitu('errorea datu-basearekin konexioa ezartzean');
 }
 if(isset($_POST['permutatu'])){
-	$sql = "update users set aktibo = abs(aktibo - 1) where id = '" . $_POST['id'] . "'";
+	$sql = "update erabiltzaile set aktibo = abs(aktibo - 1) where id = '" . $_POST['id'] . "'";
 	$konexioa -> query($sql);
 	if($konexioa -> error){
 		amaitu("errorea kontsulta egiterakoak\n" . $konexioa->error);
@@ -21,7 +21,7 @@ if(isset($_POST['ezabatu'])){
 	if(strcmp($_POST['id'],$_SESSION['id']) == 0){
 		mezua('#Kautotuta dagoen kudeatzailea ezin duzu ezabatu<br/>Errorern bat dagoela uste baduzu<br/>jar zaitez harremanten interneteko administrazailearekin');
 	}
-	$sql = "Delete from users where id ='".$_POST['id']."'";
+	$sql = "Delete from erabiltzaile where id ='".$_POST['id']."'";
 	$konexioa -> query($sql);
 	if($konexioa -> error){
 		amaitu("errorea erabiltzailearen ezabatzean<br/>".$konexioaa -> error);
@@ -90,7 +90,7 @@ th{padding:5px;color:#05A;background-color:#AAF;}
 $konexioa -> close();
 
 function taulaSortu($k){
-	$sql = "Select id, aktibo, eposta, rola, argazkia, mota from users";
+	$sql = "Select id, aktibo, eposta, rola, argazkia, mota from erabiltzaile";
 
 	$erabiltzaileak = $k -> query($sql);
 

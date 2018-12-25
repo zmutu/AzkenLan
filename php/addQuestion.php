@@ -43,11 +43,12 @@ var hasi = {
 					m = $('#msg');
 					m.html(em);
 					w = $(window);
-					m.css({'background-color':'#aaf','font-size':'1.3em',padding:'25px',border:'5px outset #778',top:(w.height()-m.height())/2,lef:(w.width()-m.width())/2}).show();
+					m.css({'background-color':'#aaf','font-size':'1.3em',padding:'25px',border:'5px outset #778',position:'absolute',top:(w.height()-m.height())/2,lef:(w.width()-m.width())/2}).show();
 					setTimeout(
 						function(){
 							m.fadeOut();
 							garbitu();
+                            $('#galderenF').trigger("reset");
 						},
 						5000
 					);

@@ -19,7 +19,8 @@ if(isset($_POST['permutatu'])){
 }
 if(isset($_POST['ezabatu'])){
 	if(strcmp($_POST['id'],$_SESSION['id']) == 0){
-		mezua('#Kautotuta dagoen kudeatzailea ezin duzu ezabatu<br/>Errorern bat dagoela uste baduzu<br/>jar zaitez harremanten interneteko administrazailearekin');
+		mezua('#Kautotuta dagoen kudeatzailea ezin duzu ezabatu<br/>Errorern bat dagoela uste baduzu<br/>
+		jar zaitez harremanten interneteko kudeatzailearekin');
 	}
 	$sql = "Delete from erabiltzaile where id ='".$_POST['id']."'";
 	$konexioa -> query($sql);

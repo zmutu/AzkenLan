@@ -2,34 +2,42 @@ Cesar Mutuberria
 
 https://github.com/zmutu/AzkenLan
 
-# 000webhost-en ezin izan dut kautotu eta asteburuan honara pasa dut:
+# "000webhost"-en ezin izan dut kautotu eta asteburuan honara pasa dut:
 http://katakrak.info/WS/php/layout.php
 
 Eskolaz kanpo egindako denbora:
 21 ordu
 
 Garapena
+========
 Pasahitza berreskuratzeko edo aldatzeko aplikazio berdina erabili dut 'pasahitza.php'
 
-Aldatu
+Pasahitza Aldatu
+----------------
 Pasahitza aldatzeko metodoa oso simplea da. Erabiltzaileak eposta, pasahitza zaharra eta bi pasahitz berriak sartu behar ditu.
 Datoak aztertu ondoren eta soilik egokiak badira, pasahitz berria datu-basean gordeko du.
 
-Berreskuratu
-Pashitza berreskuratzeko konplexuagoa da. Hau gauzatzeko taula berri bat gehitu dut 'pasahitz'. Taula honetak berreskuratze
-eskaera guztiak gordeko dira.
+Pasahitza Berreskuratu
+----------------------
+Pashitza berreskuratzeko konplexuagoa da. Hau gauzatzeko datu-basean taula berri bat gehitu dut 'pasahitz' izenekoa. Taula honetak
+berreskuratze eskaera guztiak gordeko dira.
+
 Pasahitza berreskuratzeko hiru zati desberdindu behar dira.
-Zatia 1.
+
+1 Zatia.
 Erabiltzaileak bere mail idatziko du. Zerbitzariak mail zuzena den eta matrikulatua den aztertuko du.
 Ondoren aurrez eskaera bat aktibo eta iraungitu gabe duen begiratuko du taula berrian. Eskaerarik ez badu edo eskaera iraungituta
 edo ez aktibo badu, berria sortuko du. Ausaz kode bat sortu, erabiltzailearen Id, Mail eta Izena eta kode berriarekin hash bat
 sortuko du. Erabiltzaile postara esteka bat bidaliko dio, esteka hau 'pasahitza.php' aplikaziora link bat da eta parametrizatuta
-sortu duen hash berria du. Ondoren taulan erabiltzailearen Id, sortutako kodea, denbora bat (iraungitzea denbora kontrolatzeko) eta
-aktibo = 1 gordeko du. Bidalitako esteka 24 orduko epea aktibo egonen da.
-Zatia 2.
-Erabiltzaileak mailen jaso duen esteka aukeratu ondoren aplikazioa irekiko da. Aplikazioak GET metodo bidez hash jasoko du. datu
-basean dagoen informazioarekin (id, eposta, izena, eta kodearekin alegia) konparatuko du. Ongi badago aktibo dagoen eta irauntigu
-gabe dagoen aztertuko du. Hala bada, formulario bat aurkeztuko dio, formulario honek ezkututa erabiltzailearen mail izanen du.
-Zatia 3.
-Erabiltzaileak formularioan pasahitza bi aldiz idatzi eta bidaltzekin aplikazioak pasahitzak egokiak direla aztertu eta horrela
+sortu duen hash berria du. Ondoren taulan erabiltzailearen Id, sortutako kodea, denbora bat (iraungitzea denbora kontrolatzeko)
+eta aktibo = 1 gordeko du. Bidalitako esteka 24 orduko epea aktibo egonen da.
+
+2 Zatia.
+Erabiltzaileak bere epostan jaso duen esteka aukeratu ondoren aplikazioa irekiko da. Aplikazioak GET metodo bidez hash jasoko
+du. datu basean dagoen informazioarekin (id, eposta, izena, eta kodearekin alegia) konparatuko du. Ongi badago aktibo dagoen eta 
+irauntigu gabe dagoen aztertuko du. Hala bada, formulario bat aurkeztuko dio, formulario honek ezkututa erabiltzailearen mail 
+izanen du.
+
+3 Zatia.
+Erabiltzaileak formularioan pasahitza bi aldiz idatzi eta bidaltzekin, aplikazioak pasahitzak egokiak direla aztertu eta horrela
 bada, zuzenean gorde eginen du.

@@ -46,8 +46,7 @@ if(isset($mail2)){
 	if($konexioa -> connect_error){
 		amaitu('ezin izan da zure eskaera gauzatu');
 	}
- 
-	$mtrkl = matrikulatua($k,$mail2);
+	$mtrkl = matrikulatua($konexioa,$mail2);
 	if(strcmp($mtrkl,'BAI') != 0){
 		amaitu('mail hori ez dago matrikulatuta edo ez dago sisteman gordeta');
 	}
@@ -72,7 +71,7 @@ if(isset($mail2)){
 	if(!$ok){
 		amaitu('errore bat gertatu da zure eskaera gauzatzean<br/>saiatu berriro beranduago');
 	}
-	amaitu('laister mezu bat jasoko duzu<br/>jarraitu mezuaren esanak<br/>http://katakrak.info/WS/php/pasahitza.php?jatorri='.$str);
+	amaitu('laister mezu bat jasoko duzu<br/>jarraitu mezuaren esanak');
 	
 }
 if(isset($_GET['jatorri'])){

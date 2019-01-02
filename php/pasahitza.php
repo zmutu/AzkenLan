@@ -9,10 +9,6 @@ if(isset($_POST['mailId'])){$userId = $_POST['mailId'];}
 
 include('dbConfig.php');
 
-if(isset($_POST['matrikula'])){
-	//ikaslea matrikulatuta dagoen aztertu
-	amaitu(matrikulatua($_POST['mail1']));
-}
 if(isset($pasahitza0)){
 	//pasahitz bat aldatu nahi da
   	$msg = datoak_aztertu($mail,$pasahitza0,$pasahitza1,$pasahitza2);
@@ -76,7 +72,7 @@ if(isset($mail2)){
 	if(!$ok){
 		amaitu('errore bat gertatu da zure eskaera gauzatzean<br/>saiatu berriro beranduago');
 	}
-	amaitu('laister mezu bat jasoko duzu<br/>jarraitu mezuaren esanak');
+	amaitu('laister mezu bat jasoko duzu<br/>jarraitu mezuaren esanak<br/>http://katakrak.info/WS/php/pasahitza.php?jatorri='.$str);
 	
 }
 if(isset($_GET['jatorri'])){
@@ -195,7 +191,7 @@ $(document).ready(hasi.onReady);
 <div id='pswrd'>
 	<h3 style='margin-bottom:2px'>Pashitza berreskuratu</h3>
 	<form id='berriaEskatu' name='berriaEskatu' enctype='multipart/form-data' method='post'>
-		<label>Mail*: <INPUT TYPE='mail' NAME='mail2' id='mail2' pattern='\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus' value='' required></label>
+		<label>Mail*: <INPUT TYPE='mail' NAME='mail2' id='mail2' pattern='\w\w[a-z]*(\x46)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$' value='' required></label>
 		<button type='submit' id='bidali' value='bidali'>Bidali</button>
 	</form>
 </div>
@@ -205,40 +201,6 @@ else{?>
 <script>
 var hasi = {
 	onReady: function(e){
-		$('#mail1').focusout(
-			function(){
-				var expReg = new RegExp(/\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus$/);
-				if(expReg.test(this.value)){
-					$.ajax({
-						type:'post',
-						url:'pasahitza.php',
-						data:{mail1:this.value,matrikula:1},
-						dataType:'text',
-						success:function(em){
-							if(em == 'BAI'){
-								$('#bidali').prop('disabled',false);
-							}
-							else{
-								m = $('<span>mail hori ez dago matrikulatuta<br/> edo ez dago erregistratua</span>');
-								$('body').append(m);
-								$W = $(window);
-								W = $W.width();
-								H = $W.height();
-								w = m.width();
-								h = m.height();
-								m.css({position:'fixed','background-color':'#aac','font-size':'1.7em',padding:'25px',border:'6px outset #aaf',top:((H-h)/2),left:((W-w)/2)});
-								setTimeout(
-									function(){
-										m.remove();
-									},
-									3000
-								);
-							}
-						}
-					});
-				}
-			}
-		);
 		$('#aldatu').on(
 			'submit',
 			function(e){
@@ -302,13 +264,13 @@ $(document).ready(hasi.onReady);
 <h3 style='margin-bottom:2px'>Pasahitza aldatu</h3>
 <form id='aldatu' name='aldatu' enctype='multipart/form-data' method='post'>
 	<frameset>
-		<label>Mail*: <INPUT TYPE='mail' NAME='mail1' id='mail1' pattern='\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus' value='' required /></label><br/>
+		<label>Mail*: <INPUT TYPE='mail' NAME='mail1' id='mail1' value='' required /></label><br/>
 		<label>Pasahitza Zaharra*: <INPUT TYPE='password' NAME='pasahitza0' id='pasahitza0' minlength='8' size='20' value='' required/></label><br/>
 		<label>Pasahitza Berria*: <INPUT TYPE='password' NAME='pasahitza1' id='pasahitza1' minlength='8' size='20' value='' required/></label><br/>
 		<label>Pasahitza Berria*: <INPUT TYPE='password' NAME='pasahitza2' id='pasahitza2' minlength='8' size='20' value='' required/></label><br/>
 	</frameset>
 	<button type='reset' value='garbitu'>Garbitu</button>
-	<button type='submit' id='bidali' value='bidali' disabled>Bidali</button>
+	<button type='submit' id='bidali' value='bidali'>Bidali</button>
 </form>
 </div>
 <?php
@@ -319,8 +281,8 @@ function datoak_aztertu($m,$p0,$p1,$p2){
 	//bi mail berriak berdinak diren
 
 	//mail aztertu
-	$exp_reg = '/\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus$/';
-	if(!preg_match ($exp_reg, $m)){return 'mail ez da zuzena';}
+	//$exp_reg = '/\w\w[a-z]*(\x46)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$';
+	//if(!preg_match ($exp_reg, $m)){return 'mail ez da zuzena';}
 	
 	//pasahitzak desberdinak dira
 	if($p1 != $p2){return 'pasahitz berriak desberdinak dira';}
@@ -332,28 +294,6 @@ function datoak_aztertu($m,$p0,$p1,$p2){
 	if(strcmp($p0,$p1) == 0){return 'pasahitza zaharra eta berriak berdinak dira';}
 
 	return '';
-}
-function matrikulatua($ml){
-	//mail matrikulatuta dagoen aztertzen du
-	//mail datu-basean gordeta dagoen aztertzen du.
-	//bi baldintzak ez baditu betetzen false itzulko 'EZ' itzuliko du
-	$i = 0;
-	require_once('../nuSOAP/nusoap.php');	
-	$param = array('x' => $ml);
-	$mailMatrikulatutaDago = new nusoap_client('http://ehusw.es/rosa/webZerbitzuak/egiaztatuMatrikula.php?wsdl', true);
-	$matrikulatutaDago = $mailMatrikulatutaDago -> call('egiaztatuE',$param);
-	//ikaslea matrikulatuta badago, datu-basean dagoen aztertu
-
-	if(strcmp($matrikulatutaDago,'BAI')==0){
-		include('dbconfig.php');
-		$k = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
-		$id = $k -> query("select count(id) as zk from erabiltzaile where eposta = '" . $ml . "'");
-		if($id){
-          $i = $id -> fetch_array(MYSQLI_NUM);
-		  if($i[0] == 0){$matrikulatutaDago = 'EZ';}
-        }
-	}
-	return $matrikulatutaDago;
 }
 function amaitu($msg){
 	//mezua bidali eta skripta amaitzen du

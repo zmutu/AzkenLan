@@ -56,7 +56,7 @@ else{
 
 function datoak_aztertu($m,$p){
 	//mail aztertu
-	$exp_reg = '/\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus$/';
+	$exp_reg = '/\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$/';
 	if(!preg_match ($exp_reg, $m)){return 'mail ez da zuzena';}
 	
 	//pasahitza gitxienen 8ko luzera
@@ -130,7 +130,7 @@ p{padding:5px;}
 	<form id='logF' name='logF' onreset='garbitu()'>
 		<fieldset style='text-align:center;'>
 			<h3>LOG IN</h3>
-<span><label>Mail*: <INPUT TYPE='mail' NAME='mail' id='mail' pattern='\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus\$' value='' required></label></span><br/><br/>
+<span><label>Mail*: <INPUT TYPE='mail' NAME='mail' id='mail' pattern='\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$' value='' required></label></span><br/><br/>
 			<span><label>Pasahitza*: <INPUT TYPE='password' NAME='pasahitza' id='pasahitza' size='20' minlength='8' value='' required></label></span><br/>
 			<br/>
 			<hr/>

@@ -42,14 +42,14 @@ if(isset($pasahitza0)){
 }
 if(isset($mail2)){
 	//mail berreskuratzeko eskaera bat jaso da
-	$mtrkl = matrikulatua($mail2);
-	if(strcmp($mtrkl,'BAI') != 0){
-		amaitu('mail hori ez dago matrikulatuta edo ez dago sisteman gordeta');
-	}
-  
-	$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
+  	$konexioa = new mysqli($zerbitzaria,$erabiltzaile,$gakoa,$db);
 	if($konexioa -> connect_error){
 		amaitu('ezin izan da zure eskaera gauzatu');
+	}
+ 
+	$mtrkl = matrikulatua($k,$mail2);
+	if(strcmp($mtrkl,'BAI') != 0){
+		amaitu('mail hori ez dago matrikulatuta edo ez dago sisteman gordeta');
 	}
 	$mailId = eman_id($konexioa,$mail2);
 	if(eskaera_aktibo_du($konexioa,$mailId)){
@@ -191,7 +191,7 @@ $(document).ready(hasi.onReady);
 <div id='pswrd'>
 	<h3 style='margin-bottom:2px'>Pashitza berreskuratu</h3>
 	<form id='berriaEskatu' name='berriaEskatu' enctype='multipart/form-data' method='post'>
-		<label>Mail*: <INPUT TYPE='mail' NAME='mail2' id='mail2' pattern='\w\w[a-z]*(\x46)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$' value='' required></label>
+		<label>Mail*: <INPUT TYPE='mail' NAME='mail2' id='mail2' value='' required></label>
 		<button type='submit' id='bidali' value='bidali'>Bidali</button>
 	</form>
 </div>
@@ -294,6 +294,25 @@ function datoak_aztertu($m,$p0,$p1,$p2){
 	if(strcmp($p0,$p1) == 0){return 'pasahitza zaharra eta berriak berdinak dira';}
 
 	return '';
+}
+function matrikulatua($k,$ml){
+	//mail matrikulatuta dagoen aztertzen du
+	//mail datu-basean gordeta dagoen aztertzen du.
+	//bi baldintzak ez baditu betetzen false itzulko 'EZ' itzuliko du
+	$i = 0;
+	require_once('../nuSOAP/nusoap.php');	
+	$param = array('x' => $ml);
+	$mailMatrikulatutaDago = new nusoap_client('http://ehusw.es/rosa/webZerbitzuak/egiaztatuMatrikula.php?wsdl', true);
+	$matrikulatutaDago = $mailMatrikulatutaDago -> call('egiaztatuE',$param);
+	//ikaslea matrikulatuta badago, datu-basean dagoen aztertu
+
+	if(strcmp($matrikulatutaDago,'BAI')==0){
+		$id = $k -> query("select count(id) as zk from erabiltzaile where eposta = '" . $ml . "'");
+      	$i = $id -> fetch_array(MYSQLI_NUM);
+
+		if($i[0] == 0){$matrikulatutaDago = 'EZ';}
+	}
+	return $matrikulatutaDago;
 }
 function amaitu($msg){
 	//mezua bidali eta skripta amaitzen du

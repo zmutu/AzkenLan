@@ -153,7 +153,7 @@ var hasi = {
 			
 		});
 		$('#mail').focusout(function(){
-			var expReg = new RegExp(/\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus$/);
+			var expReg = new RegExp(/\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$/);
 			if(expReg.test(this.value)){
 				$.ajax({
 					url: 'signup.php',
@@ -196,7 +196,7 @@ $(document).ready(hasi.onReady);
 	<form id='galderenF' name='galderenF' enctype='multipart/form-data' onreset='garbitu()' method='post'>
 		<fieldset style='text-align:center;'>
 			<h3 style='text-align:center;'>SIGN UP</h3>
-			<p><label>Mail*: <INPUT TYPE='mail' NAME='mail' id='mail' pattern='\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus' value='' required></label></p>
+			<p><label>Mail*: <INPUT TYPE='mail' NAME='mail' id='mail' pattern='\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$' value='' required></label></p>
 			<p>
 				<label>Izena*: <INPUT TYPE='text' NAME='izena' id='izena' value='' required></label><br/>
 				<label>Pasahitza*: <INPUT TYPE='password' NAME='pasahitza1' id='pasahitza1' minlength='8' size='20' value='' required></label><br/>
@@ -218,7 +218,7 @@ $(document).ready(hasi.onReady);
 }
 function datoak_aztertu($m,$i,$p1,$p2){
 	//mail aztertu
-	$exp_reg = '/\w\w[a-z]*\d\d\d@(ikasle\.)?ehu\.eus$/';
+	$exp_reg = '/\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$/';
 	if(!preg_match ($exp_reg, $m)){return 'mail ez da zuzena';}
 	
 	//izena (bi hitz eta hizki larriz hasten direnak)

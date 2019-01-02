@@ -190,7 +190,7 @@ $(document).ready(hasi.onReady);
 <div id='pswrd'>
 	<h3 style='margin-bottom:2px'>Pashitza berreskuratu</h3>
 	<form id='berriaEskatu' name='berriaEskatu' enctype='multipart/form-data' method='post'>
-		<label>Mail*: <INPUT TYPE='mail' NAME='mail2' id='mail2' value='' required></label>
+		<label>Mail*: <INPUT TYPE='mail' NAME='mail2' id='mail2' patterm='\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$' value='' required></label>
 		<button type='submit' id='bidali' value='bidali'>Bidali</button>
 	</form>
 </div>
@@ -263,7 +263,7 @@ $(document).ready(hasi.onReady);
 <h3 style='margin-bottom:2px'>Pasahitza aldatu</h3>
 <form id='aldatu' name='aldatu' enctype='multipart/form-data' method='post'>
 	<frameset>
-		<label>Mail*: <INPUT TYPE='mail' NAME='mail1' id='mail1' value='' required /></label><br/>
+		<label>Mail*: <INPUT TYPE='mail' NAME='mail1' pattern='\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$' id='mail1' value='' required /></label><br/>
 		<label>Pasahitza Zaharra*: <INPUT TYPE='password' NAME='pasahitza0' id='pasahitza0' minlength='8' size='20' value='' required/></label><br/>
 		<label>Pasahitza Berria*: <INPUT TYPE='password' NAME='pasahitza1' id='pasahitza1' minlength='8' size='20' value='' required/></label><br/>
 		<label>Pasahitza Berria*: <INPUT TYPE='password' NAME='pasahitza2' id='pasahitza2' minlength='8' size='20' value='' required/></label><br/>
@@ -280,8 +280,8 @@ function datoak_aztertu($m,$p0,$p1,$p2){
 	//bi mail berriak berdinak diren
 
 	//mail aztertu
-	//$exp_reg = '/\w\w[a-z]*(\x46)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$';
-	//if(!preg_match ($exp_reg, $m)){return 'mail ez da zuzena';}
+	$exp_reg = '/\w\w[a-z]*(\.)?\w\w[a-z]*(\d\d\d)?@(ikasle\.)?ehu\.eus$';
+	if(!preg_match ($exp_reg, $m)){return 'mail ez da zuzena';}
 	
 	//pasahitzak desberdinak dira
 	if($p1 != $p2){return 'pasahitz berriak desberdinak dira';}
